@@ -1,13 +1,13 @@
-import React from 'react'
-import FacebookLogin from 'react-facebook-login'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react';
+import FacebookLogin from 'react-facebook-login';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
   cb: (response: any) => void
   cssClass: string
 }
 
-const FbIcon = <FontAwesomeIcon icon={['fab', 'facebook-f']} size='lg' />
+const FbIcon = <FontAwesomeIcon icon={['fab', 'facebook-f']} size='lg' />;
 
 const FBLoginButton = ({ cb, cssClass }: Props) => {
   return (
@@ -19,7 +19,7 @@ const FBLoginButton = ({ cb, cssClass }: Props) => {
       cssClass={cssClass}
       icon={FbIcon}
     />
-  )
-}
+  );
+};
 
-export default FBLoginButton
+export default FBLoginButton;
