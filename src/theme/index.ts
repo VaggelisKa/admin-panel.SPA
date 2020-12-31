@@ -1,4 +1,4 @@
-import { keyframes } from 'styled-components'
+import { keyframes } from 'styled-components';
 
 export const theme = {
   colors: {
@@ -28,7 +28,7 @@ export const theme = {
   },
   width: '1000px',
   transition: '0.35s',
-}
+};
 
 export const appear = keyframes`
   from {
@@ -38,4 +38,4 @@ export const appear = keyframes`
   to {
     opacity: 1;
   }
-`
+`;

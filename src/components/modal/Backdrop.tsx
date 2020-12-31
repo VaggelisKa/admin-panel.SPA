@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { appear } from '../../theme'
+import { appear } from '../../theme';
 
 export default styled.div`
   position: fixed;
@@ -9,5 +9,5 @@ export default styled.div`
   height: 100vh;
   width: 100%;
   background: rgba(0, 0, 0, 0.65);
-  animation: ${appear} 0.5s linear;
-`
+  animation: ${appear} 0.3s linear;
+`;

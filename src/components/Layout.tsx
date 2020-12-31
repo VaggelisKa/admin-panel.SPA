@@ -1,24 +1,25 @@
-import React, { useContext } from 'react'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
-import { config, dom } from '@fortawesome/fontawesome-svg-core'
+import React, { useContext } from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { config, dom } from '@fortawesome/fontawesome-svg-core';
 
-import '../fontAwesome'
+import '../fontAwesome';
 
-import { theme } from '../theme'
-import NavBar from './NavBar'
-import { AuthContext } from '../context/AuthContextProvider'
-import Backdrop from './modal/Backdrop'
-import SignUp from './SignUp'
-import SignIn from './SignIn'
-import RequestResetPassword from './RequestResetPassword'
-import ResetPassword from './ResetPassword'
+import { theme } from '../theme';
+import NavBar from './NavBar';
+import { AuthContext } from '../context/AuthContextProvider';
+import Backdrop from './modal/Backdrop';
+import SignUp from './SignUp';
+import SignIn from './SignIn';
+import RequestResetPassword from './RequestResetPassword';
+import ResetPassword from './ResetPassword';
 
-config.autoAddCss = false
+config.autoAddCss = false;
 
 interface Props {
   title?: string
+  children: any
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -54,12 +55,12 @@ const GlobalStyle = createGlobalStyle`
         background: ${(props) => props.theme.colors.lightGrey};
     }
    }
-`
+`;
 
 const StyledPage = styled.div`
   background: white;
   color: ${(props) => props.theme.fontColors.primary};
-`
+`;
 
 const DisplayedPage = styled.div`
   width: 80%;
@@ -67,12 +68,11 @@ const DisplayedPage = styled.div`
   padding: 2rem;
   display: flex;
   justify-content: center;
-`
+`;
 
-const Layout: React.FC<Props> = ({ children }) => {
-  const { authAction } = useContext(AuthContext)
-
-  const { pathname } = useRouter()
+const Layout: React.FC<Props> = ({ children }: Props) => {
+  const { authAction } = useContext(AuthContext);
+  const { pathname } = useRouter();
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,9 +93,7 @@ const Layout: React.FC<Props> = ({ children }) => {
               rel='stylesheet'
             />
           </Head>
-
           <NavBar />
-
           <DisplayedPage>
             <>{children}</>
             <>
@@ -132,6 +130,6 @@ const Layout: React.FC<Props> = ({ children }) => {
         </StyledPage>
       </>
     </ThemeProvider>
-  )
-}
-export default Layout
+  );
+};
+export default Layout;

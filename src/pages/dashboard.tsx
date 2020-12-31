@@ -1,3 +1,4 @@
 export default function Dashboard() {
-  return <h2>dashboard</h2>
+  // eslint-disable-next-line react/react-in-jsx-scope
+  return <h2>dashboard</h2>;
 }

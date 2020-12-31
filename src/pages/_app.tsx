@@ -1,8 +1,8 @@
-import React from 'react'
-import { AppProps } from 'next/app'
+import React from 'react';
+import { AppProps } from 'next/app';
 
-import Layout from '../components/Layout'
-import AuthContextProvider from '../context/AuthContextProvider'
+import Layout from '../components/Layout';
+import AuthContextProvider from '../context/AuthContextProvider';
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -11,7 +11,7 @@ function App({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </Layout>
     </AuthContextProvider>
-  )
+  );
 }
 
-export default App
+export default App;

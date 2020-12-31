@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 interface Props {}
 
 const ModalContainer: React.FC<Props> = ({}) => {
-  return <div>ModalContainer</div>
-}
+  return <div>ModalContainer</div>;
+};
 
-export default ModalContainer
+export default ModalContainer;

@@ -1,7 +1,7 @@
-import React from 'react'
-import GoogleLogin from 'react-google-login'
+import React from 'react';
+import GoogleLogin from 'react-google-login';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
   cb: (response: any) => void
@@ -25,7 +25,7 @@ const GoogleLoginButton = ({ cb, cssClass }: Props) => {
       )}
       icon={false}
     />
-  )
-}
+  );
+};
 
-export default GoogleLoginButton
+export default GoogleLoginButton;

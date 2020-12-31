@@ -1,10 +1,12 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import { appear } from '../../theme'
-import { AuthContext } from '../../context/AuthContextProvider'
+import { appear } from '../../theme';
+import { AuthContext } from '../../context/AuthContextProvider';
 
-interface Props {}
+interface Props {
+  children: any;
+}
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -14,7 +16,7 @@ const ModalContainer = styled.div`
   right: 0;
   bottom: 0;
   z-index: 9999;
-`
+`;
 
 const StyledModal = styled.div`
   position: relative;
@@ -46,7 +48,7 @@ const StyledModal = styled.div`
     width: 80%;
     top: 5%;
   }
-`
+`;
 
 const StyledAction = styled.div`
   position: absolute;
@@ -67,10 +69,10 @@ const StyledAction = styled.div`
     color: red;
     background: ${(props) => props.theme.colors.lightGrey};
   }
-`
+`;
 
-const Modal: React.FC<Props> = ({ children }) => {
-  const { handleAuthAction } = useContext(AuthContext)
+const Modal: React.FC<Props> = ({ children }: Props) => {
+  const { handleAuthAction } = useContext(AuthContext);
 
   return (
     <ModalContainer>
@@ -81,7 +83,7 @@ const Modal: React.FC<Props> = ({ children }) => {
         {children}
       </StyledModal>
     </ModalContainer>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

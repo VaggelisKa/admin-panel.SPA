@@ -28,6 +28,9 @@
         "indent": 1,
         "no-var": 2,
         "comma-dangle": 0,
-        "spaced-comment": 1
+        "spaced-comment": 1,
+        "require-jsdoc": 0,
+        "camelcase": 0,
+        "operator-linebreak": 0
     }
 }

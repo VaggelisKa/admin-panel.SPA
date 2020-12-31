@@ -1,4 +1,4 @@
-import { User } from '../types'
+import { User } from '../types';
 
 export const users: User[] = [
   {
@@ -29,4 +29,4 @@ export const users: User[] = [
     roles: ['CLIENT', 'SUPERADMIN'],
     created_at: 'JUN-21-2020 01:12PM',
   },
-]
+];
