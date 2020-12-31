@@ -1,6 +1,6 @@
 import { User } from '../types';
 
-export const isAdmin = (user: User | null) =>
+export const isAdmin = (user: User | null): boolean =>
   !user ? false
     : user.roles.includes('ADMIN') || user.roles.includes('SUPERADMIN');
 
