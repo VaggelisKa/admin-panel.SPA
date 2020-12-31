@@ -1,6 +1,8 @@
-import React, { createContext, useState, useCallback } from 'react'
+import React, { createContext, useState, useCallback, ReactChild } from 'react';
 
-interface Props {}
+interface Props {
+  children: ReactChild | ReactChild[];
+}
 
 type Actions = 'signup' | 'signin' | 'request' | 'reset' | 'close'
 
@@ -14,16 +16,16 @@ interface AuthContextValues {
 const initialState: AuthContextValues = {
   authAction: 'close',
   handleAuthAction: () => {},
-}
+};
 
-export const AuthContext = createContext<AuthContextValues>(initialState)
+export const AuthContext = createContext<AuthContextValues>(initialState);
 
-const AuthContextProvider: React.FC<Props> = ({ children }) => {
-  const [authAction, setAuthAction] = useState<Actions>('close')
+const AuthContextProvider: React.FC<Props> = ({ children }: Props) => {
+  const [authAction, setAuthAction] = useState<Actions>('close');
 
   const handleAuthAction: HandleAuthAction = useCallback((action) => {
-    setAuthAction(action)
-  }, [])
+    setAuthAction(action);
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -34,7 +36,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-export default AuthContextProvider
+export default AuthContextProvider;

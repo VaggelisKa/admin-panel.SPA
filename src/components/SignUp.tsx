@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import Modal from './modal/Modal'
-import { AuthContext } from '../context/AuthContextProvider'
+import Modal from './modal/Modal';
+import { AuthContext } from '../context/AuthContextProvider';
 
 interface Props {}
 
@@ -13,7 +13,7 @@ export const FormContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 2.5rem 0;
-`
+`;
 
 export const Header = styled.div`
   width: 100%;
@@ -26,7 +26,7 @@ export const Header = styled.div`
   h2 {
     margin: 0;
   }
-`
+`;
 
 export const StyledForm = styled.form`
   width: 100%;
@@ -40,7 +40,7 @@ export const StyledForm = styled.form`
     padding: 0;
     color: ${(props) => props.theme.colors.teal};
   }
-`
+`;
 
 export const InputContainer = styled.div`
   width: 100%;
@@ -49,7 +49,7 @@ export const InputContainer = styled.div`
   flex-direction: column;
   justify-content: stretch;
   align-items: stretch;
-`
+`;
 
 export const Input = styled.input`
   width: 100%;
@@ -61,7 +61,7 @@ export const Input = styled.input`
   font-size: 1.4rem;
   outline: none;
   box-shadow: 2px 2px 4px ${(props) => props.theme.colors.lightGrey};
-`
+`;
 
 export const Button = styled.button`
   width: 100%;
@@ -74,14 +74,14 @@ export const Button = styled.button`
   &:hover {
     background: ${(props) => props.theme.colors.darkTeal};
   }
-`
+`;
 
 export const StyledError = styled.p`
   margin: 0;
   padding: 0;
   color: red;
   font-size: 1.5rem;
-`
+`;
 
 export const StyledSwitchAction = styled.div`
   margin: 0;
@@ -95,7 +95,7 @@ export const StyledSwitchAction = styled.div`
     margin: 0;
     margin-top: 1rem;
   }
-`
+`;
 
 export const StyledInform = styled.div`
   margin: 0;
@@ -107,7 +107,7 @@ export const StyledInform = styled.div`
     color: ${(props) => props.theme.colors.teal};
     padding: 0;
   }
-`
+`;
 
 export const StyledSocial = styled.div`
   margin: 1rem auto;
@@ -144,16 +144,16 @@ export const StyledSocial = styled.div`
       background: ${(props) => props.theme.colors.googleDarkRed};
     }
   }
-`
+`;
 
 export const Divider = styled.hr`
   background-color: ${(props) => props.theme.colors.lightGrey};
   height: 1px;
   width: 100%;
-`
+`;
 
 const SignUp: React.FC<Props> = () => {
-  const { handleAuthAction } = useContext(AuthContext)
+  const { handleAuthAction } = useContext(AuthContext);
 
   return (
     <Modal>
@@ -215,7 +215,7 @@ const SignUp: React.FC<Props> = () => {
         </StyledSwitchAction>
       </FormContainer>
     </Modal>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;
