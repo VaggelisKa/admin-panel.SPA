@@ -32,6 +32,7 @@
         "require-jsdoc": 0,
         "camelcase": 0,
         "operator-linebreak": 0,
-        "no-unused-vars": 0
+        "no-unused-vars": 0,
+        "no-trailing-spaces": 1
     }
 }

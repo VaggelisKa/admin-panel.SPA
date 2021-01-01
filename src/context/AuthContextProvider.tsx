@@ -46,7 +46,6 @@ const AuthContextProvider: React.FC<Props> = ({ children }: Props) => {
     setAuthAction(action);
   }, []);
 
-  console.log('GQL data => ', user);
   return (
     <AuthContext.Provider
       value={{
