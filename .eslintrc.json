@@ -34,6 +34,7 @@
         "operator-linebreak": 0,
         "no-unused-vars": 0,
         "no-trailing-spaces": 1,
-        "max-len": 0
+        "max-len": 0,
+        
     }
 }

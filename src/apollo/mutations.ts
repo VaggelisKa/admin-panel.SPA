@@ -10,3 +10,14 @@ export const SIGNUP_MUTATION = gql `
         }
     }
 `;
+
+export const SIGNIN_MUTATION = gql `
+    mutation Signin($email: String!, $password: String!) {
+        signin(email: $email, password: $password) {
+            id
+            username
+            email
+            roles
+        }
+    }
+`;

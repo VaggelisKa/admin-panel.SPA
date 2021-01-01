@@ -254,6 +254,14 @@ const SignUp: React.FC<Props> = () => {
               placeholder='Your password'
               ref={register({
                 required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 digits'
+                },
+                maxLength: {
+                  value: 30,
+                  message: 'Password cannot exceed 30 digits'
+                }
               })}
             />
             <ErrorMessage errors={errors} name='password'>
@@ -266,7 +274,7 @@ const SignUp: React.FC<Props> = () => {
           >
             { loading ?
               <Loader type='Oval' color='white' height={30} />
-              : 'Submit'
+              : 'Sign Up'
             }
           </Button>
           <StyledError>

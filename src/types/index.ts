@@ -13,3 +13,5 @@ export interface SignupArgs {
   email: string;
   password: string;
 }
+
+export type SigninArgs = Pick<SignupArgs, 'email' | 'password'>
