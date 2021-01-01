@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { ReactChild, useContext } from 'react';
 import styled from 'styled-components';
 
 import { appear } from '../../theme';
 import { AuthContext } from '../../context/AuthContextProvider';
 
 interface Props {
-  children: any;
+  children: ReactChild | ReactChild[];
 }
 
 const ModalContainer = styled.div`

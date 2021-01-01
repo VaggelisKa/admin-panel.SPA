@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { useForm, ErrorMessage } from 'react-hook-form';
 
 import Modal from './modal/Modal';
 import { AuthContext } from '../context/AuthContextProvider';
@@ -154,6 +155,16 @@ export const Divider = styled.hr`
 
 const SignUp: React.FC<Props> = () => {
   const { handleAuthAction } = useContext(AuthContext);
+  const { register, handleSubmit, errors } = useForm<
+    {
+      username: string,
+      email: string,
+      password: string
+    }>();
+
+  const submitSignup = handleSubmit(({ username, email, password }) => {
+    console.log(username, ' ', email, ' ', password);
+  });
 
   return (
     <Modal>
@@ -164,7 +175,7 @@ const SignUp: React.FC<Props> = () => {
 
         <Divider />
 
-        <StyledForm>
+        <StyledForm onSubmit={submitSignup}>
           <p className='email_section_label'>or sign up with an email</p>
           <InputContainer>
             <label>Username</label>
@@ -174,32 +185,60 @@ const SignUp: React.FC<Props> = () => {
               id='username'
               placeholder='Your username'
               autoComplete='new-password'
+              ref={register({
+                required: 'Username is required',
+                minLength: {
+                  value: 3,
+                  message: 'Username must be larger'
+                },
+                maxLength: {
+                  value: 30,
+                  message: 'Username must be smaller'
+                }
+              })}
             />
+            <ErrorMessage errors={errors} name='username'>
+              {({ message }) => <StyledError>{message}</StyledError>}
+            </ErrorMessage>
           </InputContainer>
 
           <InputContainer>
             <label>Email</label>
-
             <Input
               type='text'
               name='email'
               id='email'
               placeholder='Your email'
               autoComplete='new-password'
+              ref={register({
+                required: 'Email is required',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Invalid email format'
+                }
+              })}
             />
+            <ErrorMessage errors={errors} name='email'>
+              {({ message }) => <StyledError>{message}</StyledError>}
+            </ErrorMessage>
           </InputContainer>
 
           <InputContainer>
             <label>Password</label>
-
             <Input
               type='password'
               name='password'
               id='password'
               placeholder='Your password'
+              ref={register({
+                required: 'Password is required',
+              })}
             />
+            <ErrorMessage errors={errors} name='password'>
+              {({ message }) => <StyledError>{message}</StyledError>}
+            </ErrorMessage>
           </InputContainer>
-          <Button disabled>Submit</Button>
+          <Button>Submit</Button>
         </StyledForm>
         <StyledSwitchAction>
           <p>
