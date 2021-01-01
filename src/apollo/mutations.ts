@@ -21,3 +21,11 @@ export const SIGNIN_MUTATION = gql `
         }
     }
 `;
+
+export const SIGNOUT_MUTATION = gql `
+    mutation Signout {
+        signout {
+            message
+        }
+    }
+`;

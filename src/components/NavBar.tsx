@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useMutation } from '@apollo/client';
 
 import { AuthContext } from '../context/AuthContextProvider';
 import { isAdmin } from '../helpers/authHelpers';
+import { SIGNOUT_MUTATION } from 'apollo/mutations';
 
 interface Props {}
 
@@ -106,9 +108,21 @@ const HamMenu = styled.div`
 `;
 
 const NavBar: React.FC<Props> = () => {
-  const { handleAuthAction, user } = useContext(AuthContext);
+  const { handleAuthAction, user, setAuthUser } = useContext(AuthContext);
   const router = useRouter();
+  const [signout] = useMutation<{signout: {message: string}}>(SIGNOUT_MUTATION);
 
+  const handleSignout = async () => {
+    try {
+      const res = await signout();
+      if (res?.data?.signout?.message) {
+        setAuthUser(null);
+        router.push('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Header>
@@ -150,7 +164,7 @@ const NavBar: React.FC<Props> = () => {
           )}
         </Ul>
         <Actions>
-          {user ? <button>Sign Out</button>
+          {user ? <button onClick={handleSignout}>Sign Out</button>
                 :
                 <>
                   <button
