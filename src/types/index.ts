@@ -7,3 +7,9 @@ export interface User {
   roles: Role[];
   created_at: string;
 }
+
+export interface SignupArgs {
+  username: string;
+  email: string;
+  password: string;
+}

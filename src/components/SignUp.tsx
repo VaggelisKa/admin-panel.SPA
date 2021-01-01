@@ -1,9 +1,14 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { useForm, ErrorMessage } from 'react-hook-form';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import Modal from './modal/Modal';
-import { AuthContext } from '../context/AuthContextProvider';
+import Modal from 'components/modal/Modal';
+import { AuthContext } from 'context/AuthContextProvider';
+import { SIGNUP_MUTATION } from 'apollo/mutations';
+import { SignupArgs, User } from 'types';
+import Loader from 'react-loader-spinner';
 
 interface Props {}
 
@@ -80,8 +85,9 @@ export const Button = styled.button`
 export const StyledError = styled.p`
   margin: 0;
   padding: 0;
+  padding-top: 0.2rem;
   color: red;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 `;
 
 export const StyledSwitchAction = styled.div`
@@ -154,16 +160,32 @@ export const Divider = styled.hr`
 `;
 
 const SignUp: React.FC<Props> = () => {
-  const { handleAuthAction } = useContext(AuthContext);
-  const { register, handleSubmit, errors } = useForm<
-    {
-      username: string,
-      email: string,
-      password: string
-    }>();
+  const { handleAuthAction, setAuthUser } = useContext(AuthContext);
+  const { register, handleSubmit, errors } = useForm<SignupArgs>();
+  const [signup, { loading, error }] = useMutation<{signup: User}, SignupArgs>(SIGNUP_MUTATION);
+  const router = useRouter();
 
-  const submitSignup = handleSubmit(({ username, email, password }) => {
-    console.log(username, ' ', email, ' ', password);
+  const submitSignup = handleSubmit(async ({ username, email, password }) => {
+    try {
+      const res = await signup({ variables:
+        {
+          username,
+          email,
+          password
+        }
+      });
+
+      if (res?.data) {
+        const { signup } = res.data;
+        if (signup) {
+          handleAuthAction('close');
+          setAuthUser(signup);
+          router.push('/dashboard');
+        }
+      }
+    } catch (error) {
+      setAuthUser(null);
+    }
   });
 
   return (
@@ -238,7 +260,20 @@ const SignUp: React.FC<Props> = () => {
               {({ message }) => <StyledError>{message}</StyledError>}
             </ErrorMessage>
           </InputContainer>
-          <Button>Submit</Button>
+          <Button
+            disabled={loading}
+            style={{cursor: loading ? 'not-allowed' : 'pointer'}}
+          >
+            { loading ?
+              <Loader type='Oval' color='white' height={30} />
+              : 'Submit'
+            }
+          </Button>
+          <StyledError>
+            {error && (error.graphQLErrors[0]?.message ?
+              error.graphQLErrors[0]?.message : 'Unexpected error'
+            )}
+          </StyledError>
         </StyledForm>
         <StyledSwitchAction>
           <p>

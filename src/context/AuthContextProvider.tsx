@@ -16,16 +16,19 @@ interface Props {
 
 type Actions = 'signup' | 'signin' | 'request' | 'reset' | 'close'
 type HandleAuthAction = (action: Actions) => void
+type SetAuthUser = (user: User | null) => void
 
 interface AuthContextValues {
   authAction: Actions
   handleAuthAction: HandleAuthAction
+  setAuthUser: SetAuthUser
   user: User | null
 }
 
 const initialState: AuthContextValues = {
   authAction: 'close',
   handleAuthAction: () => {},
+  setAuthUser: () => {},
   user: null,
 };
 
@@ -46,12 +49,15 @@ const AuthContextProvider: React.FC<Props> = ({ children }: Props) => {
     setAuthAction(action);
   }, []);
 
+  const setAuthUser = (user: User | null) => setUser(user);
+
   return (
     <AuthContext.Provider
       value={{
         authAction,
         handleAuthAction,
-        user
+        user,
+        setAuthUser
       }}
     >
       {children}

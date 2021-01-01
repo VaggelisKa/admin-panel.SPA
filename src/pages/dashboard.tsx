@@ -11,7 +11,7 @@ const Dashboard = () => {
     if (!user) router.push('/');
   }, [user]);
 
-  return ( user ? <h2>Dashboard</h2> : <p>Loading...</p> );
+  return ( user ? <h2>Welcome to your dashboard, {user.username}</h2> : <p>Loading...</p> );
 };
 
 export default Dashboard;
