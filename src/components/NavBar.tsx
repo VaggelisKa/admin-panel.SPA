@@ -116,7 +116,7 @@ const NavBar: React.FC<Props> = () => {
         <Link href='/'>
           <Logo>
             <a className={router.pathname === '/' ? 'active' : ''}>
-              SimpleShop
+              SimplePanel
             </a>
           </Logo>
         </Link>
