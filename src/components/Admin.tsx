@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import AdminRow from './AdminRow';
-import { users } from '../helpers/data';
+import { users } from 'helpers/data';
 
 const Div = styled.div`
   width: 100%;

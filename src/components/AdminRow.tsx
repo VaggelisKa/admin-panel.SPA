@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useState, useCallback } from 'react';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { User } from '../types'
-import { isSuperAdmin } from '../helpers/authHelpers'
+import { User } from 'types';
+import { isSuperAdmin } from 'helpers/authHelpers';
 
 interface Props {
   user: User
@@ -16,21 +16,21 @@ const DeleteBtn = styled.button`
   &:hover {
     background: orange;
   }
-`
+`;
 
-const AdminRow: React.FC<Props> = ({ user }) => {
-  const { roles } = user
+const AdminRow: React.FC<Props> = ({ user }: Props) => {
+  const { roles } = user;
   const initialState = useCallback(
-    () => ({
-      CLIENT: roles.includes('CLIENT'),
-      ITEMEDITOR: roles.includes('ITEMEDITOR'),
-      ADMIN: roles.includes('ADMIN'),
-    }),
-    []
-  )
+      () => ({
+        CLIENT: roles.includes('CLIENT'),
+        ITEMEDITOR: roles.includes('ITEMEDITOR'),
+        ADMIN: roles.includes('ADMIN'),
+      }),
+      []
+  );
 
-  const [isEditig, setIsEditing] = useState(false)
-  const [roleState, setRoleState] = useState(initialState)
+  const [isEditig, setIsEditing] = useState(false);
+  const [roleState, setRoleState] = useState(initialState);
 
   return (
     <tr key={user.id}>
@@ -140,8 +140,8 @@ const AdminRow: React.FC<Props> = ({ user }) => {
               icon={['fas', 'times']}
               color='red'
               onClick={() => {
-                setRoleState(initialState)
-                setIsEditing(false)
+                setRoleState(initialState);
+                setIsEditing(false);
               }}
               size='lg'
             />
@@ -161,7 +161,7 @@ const AdminRow: React.FC<Props> = ({ user }) => {
         </DeleteBtn>
       </td>
     </tr>
-  )
-}
+  );
+};
 
-export default AdminRow
+export default AdminRow;
