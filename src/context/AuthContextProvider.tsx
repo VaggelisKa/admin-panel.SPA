@@ -9,6 +9,7 @@ import React,
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../apollo/queries';
 import { User } from '../types';
+import { useRouter } from 'next/router';
 
 interface Props {
   children: ReactChild | ReactChild[];
@@ -38,12 +39,28 @@ const AuthContextProvider: React.FC<Props> = ({ children }: Props) => {
   const [authAction, setAuthAction] = useState<Actions>('close');
   const [user, setUser] = useState<User | null>(null);
   const { data } = useQuery<{user: User}>(QUERY_USER);
+  const router = useRouter();
 
   useEffect(() => {
     if (data?.user) {
       setUser(data.user);
     }
   }, [data]);
+
+  useEffect(() => {
+    const syncSignout = (event: StorageEvent) => {
+      if (event.key === 'signout') {
+        setUser(null);
+
+        window.localStorage.removeItem('signout');
+
+        router.push('/');
+      }
+    };
+    window.addEventListener('storage', syncSignout);
+
+    return () => window.removeEventListener('storage', syncSignout);
+  }, []);
 
   const handleAuthAction: HandleAuthAction = useCallback((action) => {
     setAuthAction(action);

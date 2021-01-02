@@ -118,11 +118,13 @@ const NavBar: React.FC<Props> = () => {
       if (res?.data?.signout?.message) {
         setAuthUser(null);
         router.push('/');
+
+        window.localStorage.setItem('signout', Date.now().toString());
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <Header>
