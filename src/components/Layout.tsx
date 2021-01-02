@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
@@ -71,8 +71,15 @@ const DisplayedPage = styled.div`
 `;
 
 const Layout: React.FC<Props> = ({ children }: Props) => {
-  const { authAction } = useContext(AuthContext);
-  const { pathname } = useRouter();
+  const { authAction, handleAuthAction } = useContext(AuthContext);
+  const { pathname, query } = useRouter();
+
+  useEffect(() => {
+    const { resetToken } = query;
+    if (resetToken) {
+      handleAuthAction('reset');
+    }
+  }, [query]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,7 +127,7 @@ const Layout: React.FC<Props> = ({ children }: Props) => {
                   {authAction === 'reset' && (
                     <>
                       <Backdrop />
-                      <ResetPassword />
+                      <ResetPassword token={query?.resetToken as string}/>
                     </>
                   )}
                 </>

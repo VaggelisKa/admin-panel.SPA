@@ -37,3 +37,11 @@ export const REQUEST_TO_RESET_PASSWORD_MUTATION = gql `
         }
     }
 `;
+
+export const RESET_PASSWORD_MUTATION = gql `
+    mutation ResetPassword($newPassword: String!, $token: String!) {
+        resetPassword(newPassword: $newPassword, token: $token) {
+            message
+        }
+    }
+`;

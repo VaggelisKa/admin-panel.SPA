@@ -61,7 +61,7 @@ const RequestResetPassword: React.FC<Props> = () => {
           >
             { loading ?
               <Loader type='Oval' color='white' height={30} />
-              : 'Sign In'
+              : 'Request Reset'
             }
           </Button>
 
