@@ -277,11 +277,11 @@ const SignUp: React.FC<Props> = () => {
               : 'Sign Up'
             }
           </Button>
-          <StyledError>
-            {error && (error.graphQLErrors[0]?.message ?
-              error.graphQLErrors[0]?.message : 'Unexpected error'
-            )}
-          </StyledError>
+          {error && (
+            <StyledError>
+              {error.graphQLErrors[0]?.message || 'Unexpected error'}
+            </StyledError>
+          )}
         </StyledForm>
         <StyledSwitchAction>
           <p>

@@ -37,7 +37,7 @@ const SignIn: React.FC<Props> = () => {
         if (signin) {
           handleAuthAction('close');
           setAuthUser(signin);
-          
+
           isAdmin(signin) ? router.push('/admin') : router.push('/dashboard');
         }
       }
@@ -104,11 +104,11 @@ const SignIn: React.FC<Props> = () => {
               : 'Sign In'
             }
           </Button>
-          <StyledError>
-            {error && (error.graphQLErrors[0]?.message ?
-              error.graphQLErrors[0]?.message : 'Unexpected error'
-            )}
-          </StyledError>
+          {error && (
+            <StyledError>
+              {error.graphQLErrors[0]?.message || 'Unexpected error'}
+            </StyledError>
+          )}
         </StyledForm>
         <StyledSwitchAction>
           <p>
