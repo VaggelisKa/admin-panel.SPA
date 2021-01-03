@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Admin from 'components/Admin';
 import { GetServerSideProps } from 'next';
 import cookie from 'cookie';
@@ -9,21 +8,13 @@ import { User } from 'types';
 import { isAdmin } from 'helpers/authHelpers';
 
 const AdminPage = ({userSSR}: {userSSR: User | null}) => {
-  const router = useRouter();
-  const { user } = useContext(AuthContext);
+  const { setAuthUser } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!userSSR) {
-      router.push('/');
-    } else {
-      if (!isAdmin(userSSR)) {
-        alert('No authorization');
-        router.push('/dashboard');
-      }
-    }
+    setAuthUser(userSSR);
   }, [userSSR]);
 
-  return user ? <Admin /> : <p>Loading...</p>;
+  return userSSR ? <Admin /> : <p>Loading...</p>;
 };
 
 export default AdminPage;
@@ -41,12 +32,16 @@ const USER_INFO = {
   `
 };
 
-export const getServerSideProps: GetServerSideProps = async ({req}) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
   try {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies[process.env.NEXT_PUBLIC_TOKEN_NAME!];
+    if (!token) {
+      res.writeHead(302, {Location: '/'});
+      res.end();
+    }
 
-    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URI!, {
+    const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URI!, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
       body: JSON.stringify(USER_INFO)
     });
 
-    if (!res.ok) {
+    if (!response.ok) {
       return {
         props: {
           userSSR: null
@@ -64,7 +59,16 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
       };
     }
 
-    const data = await res.json();
+    const data: {data: {user: User}} = await response.json();
+    if (!data?.data?.user) {
+      res.writeHead(302, {Location: '/'});
+      res.end();
+    }
+
+    if (!isAdmin(data.data.user)) {
+      res.writeHead(302, {Location: '/'});
+      res.end();
+    }
 
     return {
       props: {
