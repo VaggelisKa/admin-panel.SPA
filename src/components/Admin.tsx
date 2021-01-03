@@ -6,6 +6,7 @@ import Loader from 'react-loader-spinner';
 import AdminRow from './AdminRow';
 import { QUERY_USERS } from 'apollo/queries';
 import { User } from 'types';
+import { isSuperAdmin } from 'helpers/authHelpers';
 
 const Div = styled.div`
   width: 100%;
@@ -60,7 +61,9 @@ const Table = styled.table`
   }
 `;
 
-const Admin: React.FC = () => {
+interface Props { admin: User }
+
+const Admin: React.FC<Props> = ({ admin }: Props) => {
   const { data, error, loading } = useQuery<{users: User[] | null}>(QUERY_USERS, {fetchPolicy: 'network-only'});
 
 
@@ -81,25 +84,35 @@ const Admin: React.FC = () => {
             <th rowSpan={2} style={{ width: '15%' }}>
               Created At
             </th>
-            <th colSpan={4} style={{ width: '25%' }}>
-              Role
-            </th>
-            <th rowSpan={2} style={{ width: '10%' }}>
-              Edit Roles
-            </th>
+            {
+              isSuperAdmin(admin) && (
+                <>
+                  <th colSpan={4} style={{ width: '25%' }}>
+                  Role
+                  </th>
+                  <th rowSpan={2} style={{ width: '10%' }}>
+                  Edit Roles
+                  </th>
+                </>
+              )
+            }
           </tr>
           {/* Edit Roles Sub Headers */}
-          <tr>
-            <th>Client</th>
-            <th>Editor</th>
-            <th>Admin</th>
-            <th>Super</th>
-          </tr>
+          {
+            isSuperAdmin(admin) && (
+              <tr>
+                <th>Client</th>
+                <th>Editor</th>
+                <th>Admin</th>
+                <th>Super</th>
+              </tr>
+            )
+          }
         </thead>
 
         <tbody>
           {data?.users?.map((user) => (
-            <AdminRow user={user} key={user.id} />
+            <AdminRow user={user} key={user.id} admin={admin}/>
           ))}
         </tbody>
       </Table>

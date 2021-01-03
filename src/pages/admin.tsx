@@ -14,7 +14,7 @@ const AdminPage = ({userSSR}: {userSSR: User | null}) => {
     setAuthUser(userSSR);
   }, [userSSR]);
 
-  return userSSR ? <Admin /> : <p>Loading...</p>;
+  return userSSR ? <Admin admin={userSSR}/> : <p>Loading...</p>;
 };
 
 export default AdminPage;
@@ -27,6 +27,7 @@ const USER_INFO = {
         email
         username
         roles
+        created_at
       }
     }
   `

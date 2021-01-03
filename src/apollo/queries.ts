@@ -7,6 +7,7 @@ export const QUERY_USER = gql `
         email
         username
         roles
+        created_at
       }
     }
 `;
@@ -18,6 +19,7 @@ export const QUERY_USERS = gql `
       email
       username
       roles
+      created_at
     }
   }
 `;

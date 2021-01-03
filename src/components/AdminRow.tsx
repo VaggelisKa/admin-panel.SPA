@@ -7,6 +7,7 @@ import { isSuperAdmin } from 'helpers/authHelpers';
 
 interface Props {
   user: User
+  admin: User
 }
 
 const DeleteBtn = styled.button`
@@ -18,7 +19,7 @@ const DeleteBtn = styled.button`
   }
 `;
 
-const AdminRow: React.FC<Props> = ({ user }: Props) => {
+const AdminRow: React.FC<Props> = ({ user, admin }: Props) => {
   const { roles } = user;
   const initialState = useCallback(
       () => ({
@@ -32,6 +33,9 @@ const AdminRow: React.FC<Props> = ({ user }: Props) => {
   const [isEditig, setIsEditing] = useState(false);
   const [roleState, setRoleState] = useState(initialState);
 
+  const createdAtDate = new Date(+user.created_at);
+  const formattedDate = createdAtDate.toLocaleString();
+
   return (
     <tr key={user.id}>
       {/* Name */}
@@ -41,18 +45,21 @@ const AdminRow: React.FC<Props> = ({ user }: Props) => {
       <td>{user.email}</td>
 
       {/* CreatedAt */}
-      <td>{user.created_at}</td>
+      <td>{formattedDate}</td>
 
       {/* Manage Roles Section */}
       {/* client role */}
-      <td
-        style={{
-          background: !isEditig ? 'white' : undefined,
-          cursor: isEditig ? 'pointer' : undefined,
-        }}
-        className='td_role'
-      >
-        {roleState.CLIENT ? (
+
+      {isSuperAdmin(admin) && (
+        <>
+          <td
+            style={{
+              background: !isEditig ? 'white' : undefined,
+              cursor: isEditig ? 'pointer' : undefined,
+            }}
+            className='td_role'
+          >
+            {roleState.CLIENT ? (
           <FontAwesomeIcon
             icon={['fas', 'check-circle']}
             className='true'
@@ -67,17 +74,17 @@ const AdminRow: React.FC<Props> = ({ user }: Props) => {
             style={{ color: 'lightgray', cursor: 'not-allowed' }}
           />
         )}
-      </td>
+          </td>
 
-      {/* item editor role */}
-      <td
-        style={{
-          background: !isEditig ? 'white' : undefined,
-          cursor: isEditig ? 'pointer' : undefined,
-        }}
-        className='td_role'
-      >
-        {roleState.ITEMEDITOR ? (
+          {/* item editor role */}
+          <td
+            style={{
+              background: !isEditig ? 'white' : undefined,
+              cursor: isEditig ? 'pointer' : undefined,
+            }}
+            className='td_role'
+          >
+            {roleState.ITEMEDITOR ? (
           <FontAwesomeIcon
             icon={['fas', 'check-circle']}
             className='true'
@@ -92,18 +99,18 @@ const AdminRow: React.FC<Props> = ({ user }: Props) => {
             style={{ color: !isEditig ? 'lightgray' : undefined }}
           />
         )}
-      </td>
+          </td>
 
-      {/* admin role */}
-      <td
-        style={{
-          background: !isEditig ? 'white' : undefined,
-          cursor: isEditig ? 'pointer' : undefined,
-        }}
-        className='td_role'
-      >
-        <>
-          {roleState.ADMIN ? (
+          {/* admin role */}
+          <td
+            style={{
+              background: !isEditig ? 'white' : undefined,
+              cursor: isEditig ? 'pointer' : undefined,
+            }}
+            className='td_role'
+          >
+            <>
+              {roleState.ADMIN ? (
             <FontAwesomeIcon
               icon={['fas', 'check-circle']}
               className='true'
@@ -118,48 +125,50 @@ const AdminRow: React.FC<Props> = ({ user }: Props) => {
               style={{ color: !isEditig ? 'lightgray' : undefined }}
             />
           )}
+            </>
+          </td>
+
+          {/* super admin role */}
+          <td>
+            {isSuperAdmin(user) && (
+              <FontAwesomeIcon
+                style={{ cursor: 'not-allowed' }}
+                icon={['fas', 'check-circle']}
+                size='lg'
+              />
+            )}
+          </td>
+
+          {/* action */}
+          <td>
+            <p className='role_action'>
+              <button>
+                <FontAwesomeIcon
+                  icon={['fas', 'times']}
+                  color='red'
+                  onClick={() => {
+                    setRoleState(initialState);
+                    setIsEditing(false);
+                  }}
+                  size='lg'
+                />
+              </button>
+              <button>
+                <FontAwesomeIcon icon={['fas', 'check']} color='teal' size='lg' />
+              </button>
+            </p>
+          </td>
+
+          <td>
+            <DeleteBtn
+              style={{ cursor: isEditig ? 'not-allowed' : undefined }}
+              disabled={isEditig}
+            >
+              <FontAwesomeIcon icon={['fas', 'trash-alt']} size='lg' />
+            </DeleteBtn>
+          </td>
         </>
-      </td>
-
-      {/* super admin role */}
-      <td>
-        {isSuperAdmin(user) && (
-          <FontAwesomeIcon
-            style={{ cursor: 'not-allowed' }}
-            icon={['fas', 'check-circle']}
-            size='lg'
-          />
-        )}
-      </td>
-
-      {/* action */}
-      <td>
-        <p className='role_action'>
-          <button>
-            <FontAwesomeIcon
-              icon={['fas', 'times']}
-              color='red'
-              onClick={() => {
-                setRoleState(initialState);
-                setIsEditing(false);
-              }}
-              size='lg'
-            />
-          </button>
-          <button>
-            <FontAwesomeIcon icon={['fas', 'check']} color='teal' size='lg' />
-          </button>
-        </p>
-      </td>
-
-      <td>
-        <DeleteBtn
-          style={{ cursor: isEditig ? 'not-allowed' : undefined }}
-          disabled={isEditig}
-        >
-          <FontAwesomeIcon icon={['fas', 'trash-alt']} size='lg' />
-        </DeleteBtn>
-      </td>
+      )}
     </tr>
   );
 };
