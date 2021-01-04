@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 
 import { Role, User } from 'types';
 import { isSuperAdmin } from 'helpers/authHelpers';
-import { UPDATE_ROLES_MUTATION } from 'apollo/mutations';
+import { UPDATE_ROLES_MUTATION, DELETE_USER_MUTATION } from 'apollo/mutations';
 import { QUERY_USERS } from 'apollo/queries';
 import Loader from 'react-loader-spinner';
 
@@ -39,12 +39,19 @@ const AdminRow: React.FC<Props> = ({ user, admin }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [roleState, setRoleState] = useState(initialState);
   const [updateRoles, { error, loading }] = useMutation<{updateRoles: User}, UpdateRoleArgs>(UPDATE_ROLES_MUTATION);
+  const [deleteUser, deleteUserRes] = useMutation<{deleteUser: {message: string}}, {id: string}>(DELETE_USER_MUTATION);
 
   useEffect(() => {
     if (error) {
-      alert(`${error?.graphQLErrors[0]?.message}`);
+      alert(`${error.graphQLErrors[0]?.message}`);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (deleteUserRes.error) {
+      alert(`${deleteUserRes.error.graphQLErrors[0]?.message}`);
+    }
+  }, [deleteUserRes.error]);
 
   const createdAtDate = new Date(+user.created_at);
   const formattedDate = createdAtDate.toLocaleString();
@@ -72,6 +79,22 @@ const AdminRow: React.FC<Props> = ({ user, admin }: Props) => {
       );
       if (response.data?.updateRoles) {
         setIsEditing(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteUser = async (id: string) => {
+    try {
+      const response = await deleteUser(
+          {
+            variables: { id },
+            refetchQueries: [{query: QUERY_USERS}]
+          },
+      );
+      if (response?.data?.deleteUser.message) {
+        alert(`User with the id: ${id} was deleted`);
       }
     } catch (error) {
       console.log(error);
@@ -197,28 +220,38 @@ const AdminRow: React.FC<Props> = ({ user, admin }: Props) => {
                   />
                 </button>
                 <button>
-                  {
-                      loading ? <Loader /> :
-                      <FontAwesomeIcon
-                        icon={['fas', 'check']}
-                        color='teal'
-                        size='lg'
-                        onClick={() => handleUpdateRoles(user.id)}
-                      />
-                  }
+                  <FontAwesomeIcon
+                    icon={['fas', 'check']}
+                    color='teal'
+                    size='lg'
+                    onClick={() => handleUpdateRoles(user.id)}
+                  />
                 </button>
               </p>
             </td>
           )}
 
-            <td>
-              <DeleteBtn
-                style={{ cursor: isEditing ? 'not-allowed' : undefined }}
-                disabled={isEditing}
-              >
-                <FontAwesomeIcon icon={['fas', 'trash-alt']} size='lg' />
-              </DeleteBtn>
-            </td>
+            {
+              deleteUserRes.error ? <td><Loader type='Oval' color='teal' height={30} /></td> : (
+                <td>
+                  <DeleteBtn
+                    style={{ cursor: isEditing ? 'not-allowed' : undefined }}
+                    disabled={isEditing}
+                    onClick={() => {
+                      if (!confirm('Are you sure you want to delete?')) {
+                        return;
+                      }
+                      handleDeleteUser(user.id);
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={['fas', 'trash-alt']}
+                      size='lg'
+                    />
+                  </DeleteBtn>
+                </td>
+              )
+            }
           </>
         )}
       </tr>
