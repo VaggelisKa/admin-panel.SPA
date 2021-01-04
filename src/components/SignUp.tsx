@@ -9,8 +9,29 @@ import { AuthContext } from 'context/AuthContextProvider';
 import { SIGNUP_MUTATION } from 'apollo/mutations';
 import { SignupArgs, User } from 'types';
 import Loader from 'react-loader-spinner';
+import FBLoginButton from 'components/FacebookLogin';
+import GoogleLoginButton from 'components/GoogleLogin';
 
 interface Props {}
+
+interface FacebookLoginRes {
+  name: string;
+  id: string;
+  email: string;
+  expiresIn: number
+}
+
+interface GoogleLoginRes {
+  profileObj: {
+    email: string;
+    givenName: string
+    googleId: string
+  };
+  tokenObj: {
+    expires_at: number
+    expires_in: number
+  }
+}
 
 export const FormContainer = styled.div`
   width: 95%;
@@ -188,12 +209,28 @@ const SignUp: React.FC<Props> = () => {
     }
   });
 
+  const facebookLogin = async (response: FacebookLoginRes) => {
+    // const { id, name, email, expiresIn } = response;
+    console.log(response);
+  };
+
+  const googleLogin = async (response: GoogleLoginRes) => {
+    // const { givenName, email, googleId } = response.profileObj;
+    // const { expires_in, expires_at } = response.tokenObj;
+    console.log(response);
+  };
+
   return (
     <Modal>
       <FormContainer>
         <Header>
           <h2>Sign Up</h2>
         </Header>
+
+        <StyledSocial>
+          <FBLoginButton cb={facebookLogin} cssClass='facebook' />
+          <GoogleLoginButton cb={googleLogin} cssClass='google'/>
+        </StyledSocial>
 
         <Divider />
 
