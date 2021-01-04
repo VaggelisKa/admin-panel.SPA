@@ -7,21 +7,20 @@ import { AuthContext } from 'context/AuthContextProvider';
 import { User } from 'types';
 import { isAdmin } from 'helpers/authHelpers';
 
-const AdminPage = ({userSSR}: {userSSR: User | null}) => {
+const AdminPage: React.FC<{user: User}> = ({user}: {user: User}) => {
   const { setAuthUser } = useContext(AuthContext);
 
   useEffect(() => {
-    setAuthUser(userSSR);
-  }, [userSSR]);
+    setAuthUser(user);
+  }, [user]);
 
-  return userSSR ? <Admin admin={userSSR}/> : <p>Loading...</p>;
+  return user ? <Admin admin={user}/> : <p>Loading...</p>;
 };
 
-export default AdminPage;
 
 const USER_INFO = {
   query: `
-    query GetUser {
+    query {
       user {
         id
         email
@@ -55,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
     if (!response.ok) {
       return {
         props: {
-          userSSR: null
+          user: null
         }
       };
     }
@@ -73,14 +72,16 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
 
     return {
       props: {
-        userSSR: data.data.user
+        user: data.data.user
       }
     };
   } catch (error) {
     return {
       props: {
-        userSSR: null
+        user: null
       }
     };
   }
 };
+
+export default AdminPage;

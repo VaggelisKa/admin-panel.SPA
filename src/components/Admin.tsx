@@ -70,7 +70,7 @@ const Admin: React.FC<Props> = ({ admin }: Props) => {
   return loading ? <Loader type='Oval' color='teal' height={30} width={30} />
   : error ? <p>Sorry users could not be fetched</p> : (
     <Div>
-      <h3>Permission Management</h3>
+      <h3>Roles Management</h3>
       <Table>
         <thead>
           <tr>
