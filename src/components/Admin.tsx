@@ -66,7 +66,7 @@ interface Props { admin: User }
 const Admin: React.FC<Props> = ({ admin }: Props) => {
   const { data, error, loading } = useQuery<{users: User[] | null}>(QUERY_USERS, {fetchPolicy: 'network-only'});
 
-  console.log(admin);
+
   return loading ? <Loader type='Oval' color='teal' height={30} width={30} />
   : error ? <p>Sorry users could not be fetched</p> : (
     <Div>

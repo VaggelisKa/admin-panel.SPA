@@ -8,7 +8,28 @@ const link = new HttpLink({
 });
 
 export const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        fields: {
+          roles: {
+            merge(_ignored, incoming) {
+              return incoming;
+            }
+          }
+        }
+      },
+      Query: {
+        fields: {
+          users: {
+            merge(_ignored, incoming) {
+              return incoming;
+            }
+          }
+        }
+      }
+    }
+  }),
   link
 });
 
