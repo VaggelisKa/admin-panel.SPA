@@ -15,11 +15,15 @@ import {
   Button,
   StyledSwitchAction,
   Divider,
-  StyledError
+  StyledError,
+  StyledSocial
 } from './SignUp';
 import { SigninArgs, User } from 'types';
 import { SIGNIN_MUTATION } from 'apollo/mutations';
 import { isAdmin } from 'helpers/authHelpers';
+import FBLoginButton from './FacebookLogin';
+import GoogleLoginButton from './GoogleLogin';
+import { useSocialMediaLogin } from 'context/useSocialMediaLogin';
 
 interface Props {}
 
@@ -27,6 +31,7 @@ const SignIn: React.FC<Props> = () => {
   const { handleAuthAction, setAuthUser } = useContext(AuthContext);
   const { register, handleSubmit, errors } = useForm<SigninArgs>();
   const [signin, { loading, error }]= useMutation<{signin: User | null}, SigninArgs>(SIGNIN_MUTATION);
+  const { googleLogin, facebookLogin, errorResult, loadingResult } = useSocialMediaLogin();
   const router = useRouter();
 
   const submitSignin = handleSubmit(async ({ email, password }) => {
@@ -52,6 +57,11 @@ const SignIn: React.FC<Props> = () => {
         <Header>
           <h2>Sign In</h2>
         </Header>
+
+        <StyledSocial>
+          <FBLoginButton cb={facebookLogin} cssClass='facebook' />
+          <GoogleLoginButton cb={googleLogin} cssClass='google'/>
+        </StyledSocial>
 
         <Divider />
 
@@ -99,16 +109,20 @@ const SignIn: React.FC<Props> = () => {
             disabled={loading}
             style={{cursor: loading ? 'not-allowed' : 'pointer'}}
           >
-            { loading ?
+            { loading || loadingResult ?
               <Loader type='Oval' color='white' height={30} />
               : 'Sign In'
             }
           </Button>
-          {error && (
+          {error ? (
             <StyledError>
               {error.graphQLErrors[0]?.message || 'Unexpected error'}
             </StyledError>
-          )}
+          ): errorResult ? (
+            <StyledError>
+              {errorResult.graphQLErrors[0]?.message || 'Unexpected error'}
+            </StyledError>
+          ): null}
         </StyledForm>
         <StyledSwitchAction>
           <p>
