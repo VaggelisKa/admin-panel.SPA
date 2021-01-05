@@ -1,5 +1,10 @@
 export type Role = 'CLIENT' | 'ITEMEDITOR' | 'ADMIN' | 'SUPERADMIN';
 
+export enum Provider {
+  facebook = 'Facebook',
+  google = 'Google'
+}
+
 export interface User {
   id: string;
   username: string;
@@ -15,3 +20,5 @@ export interface SignupArgs {
 }
 
 export type SigninArgs = Pick<SignupArgs, 'email' | 'password'>
+export type SocialMediaLoginArgs = Pick<User, 'id' | 'email' | 'username'>
+  & {expiration: string; provider: Provider}

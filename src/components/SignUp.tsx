@@ -11,27 +11,10 @@ import { SignupArgs, User } from 'types';
 import Loader from 'react-loader-spinner';
 import FBLoginButton from 'components/FacebookLogin';
 import GoogleLoginButton from 'components/GoogleLogin';
+import { useSocialMediaLogin } from 'context/useSocialMediaLogin';
 
 interface Props {}
 
-interface FacebookLoginRes {
-  name: string;
-  id: string;
-  email: string;
-  expiresIn: number
-}
-
-interface GoogleLoginRes {
-  profileObj: {
-    email: string;
-    givenName: string
-    googleId: string
-  };
-  tokenObj: {
-    expires_at: number
-    expires_in: number
-  }
-}
 
 export const FormContainer = styled.div`
   width: 95%;
@@ -184,6 +167,7 @@ const SignUp: React.FC<Props> = () => {
   const { handleAuthAction, setAuthUser } = useContext(AuthContext);
   const { register, handleSubmit, errors } = useForm<SignupArgs>();
   const [signup, { loading, error }] = useMutation<{signup: User}, SignupArgs>(SIGNUP_MUTATION);
+  const { facebookLogin, googleLogin, errorResult, loadingResult } = useSocialMediaLogin();
   const router = useRouter();
 
   const submitSignup = handleSubmit(async ({ username, email, password }) => {
@@ -209,16 +193,6 @@ const SignUp: React.FC<Props> = () => {
     }
   });
 
-  const facebookLogin = async (response: FacebookLoginRes) => {
-    // const { id, name, email, expiresIn } = response;
-    console.log(response);
-  };
-
-  const googleLogin = async (response: GoogleLoginRes) => {
-    // const { givenName, email, googleId } = response.profileObj;
-    // const { expires_in, expires_at } = response.tokenObj;
-    console.log(response);
-  };
 
   return (
     <Modal>
@@ -309,16 +283,21 @@ const SignUp: React.FC<Props> = () => {
             disabled={loading}
             style={{cursor: loading ? 'not-allowed' : 'pointer'}}
           >
-            { loading ?
+            { loading || loadingResult ?
               <Loader type='Oval' color='white' height={30} />
               : 'Sign Up'
             }
           </Button>
-          {error && (
+          {error ? (
             <StyledError>
               {error.graphQLErrors[0]?.message || 'Unexpected error'}
             </StyledError>
-          )}
+          ) : errorResult ? (
+            <StyledError>
+              {errorResult.graphQLErrors[0]?.message || 'Unexpected error'}
+            </StyledError>
+          ) : null
+          }
         </StyledForm>
         <StyledSwitchAction>
           <p>
