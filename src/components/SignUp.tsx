@@ -208,6 +208,7 @@ const SignUp: React.FC<Props> = () => {
 
         <Divider />
 
+        {/* TODO Abstract form inputs and buttons into their own component */}
         <StyledForm onSubmit={submitSignup}>
           <p className='email_section_label'>or sign up with an email</p>
           <InputContainer>

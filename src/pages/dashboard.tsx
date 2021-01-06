@@ -11,6 +11,7 @@ const Dashboard = () => {
     if (!user) router.push('/');
   }, [user]);
 
+  // TODO Add diagrams
   return ( user ? <h2>Welcome to your dashboard, {user.username}</h2> : <p>Loading...</p> );
 };
 
